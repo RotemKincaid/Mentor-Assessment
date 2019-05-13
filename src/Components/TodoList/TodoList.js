@@ -18,10 +18,21 @@ class TodoList extends Component {
   componentDidMount() {
     this.getAllTasks();
   }
+  deleteTask = id => {
+    
+    axios
+      .delete(`https://practiceapi.devmountain.com/api/tasks/${id}`)
+      .then(tasks => {
+        const newTasks = this.props.setTask(tasks.data)
+        this.setState({
+          tasks: newTasks.payload
+        })
+  
+      });
+  };
 
   getAllTasks = () => {
     axios.get("https://practiceapi.devmountain.com/api/tasks").then(tasks => {
-      console.log("the tasks?", tasks);
       this.props.setTask(tasks.data);
       this.setState({
         tasks: tasks.data
@@ -30,16 +41,17 @@ class TodoList extends Component {
   };
 
   render() {
-    console.log(this.props);
-    const { task } = this.props;
+    const { tasks } = this.state;
 
-    const mappedTasks = task.map(task => {
+    const mappedTasks = tasks.map(task => {
       return (
         <div key={task.id}>
           <Task
             title={task.title}
             description={task.description}
             completed={task.completed}
+            id={task.id}
+            deleteTask={this.deleteTask}
           />
         </div>
       );
@@ -47,6 +59,8 @@ class TodoList extends Component {
 
     return (
       <div className="todo-main">
+        {/* {console.log('tasks below')}
+        {console.log(this.state.tasks)} */}
         <div className="todo-inner">
           <h1>TO-DO:</h1>
           <button>
