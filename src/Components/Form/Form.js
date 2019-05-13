@@ -17,6 +17,7 @@ class Form extends Component {
   }
 
   titleHandler = e => {
+    
     this.setState({
       title: e.target.value
     });
@@ -36,8 +37,6 @@ class Form extends Component {
 
   createTask = () => {
     const { title, description, isComplete } = this.state;
-    console.log(this.props);
-
     const { id } = this.props.task;
     axios
       .post("https://practiceapi.devmountain.com/api/tasks", {
