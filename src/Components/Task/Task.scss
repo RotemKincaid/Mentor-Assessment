@@ -1,0 +1,16 @@
+.task-main {
+  height: 30px;
+  width: 400px;
+  background-color: rgba(173, 166, 166, 0.438);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 5px;
+  border-radius: 10px;
+  .title {
+    margin-left: 20px;
+    a {
+      text-decoration: none;
+    }
+  }
+}

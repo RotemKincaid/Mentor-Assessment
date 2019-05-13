@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import Task from "../Task/Task";
 import "../TodoList/TodoList.scss";
 import axios from "axios";
+import Form from "../Form/Form";
+import TaskEdit from "../TaskEdit/TaskEdit";
 
 class TodoList extends Component {
   constructor() {
@@ -12,22 +14,52 @@ class TodoList extends Component {
 
     this.state = {
       tasks: [],
-      addedTask: ""
+      addedTask: "",
+      isComplete: false
     };
   }
   componentDidMount() {
     this.getAllTasks();
   }
   deleteTask = id => {
-    
     axios
       .delete(`https://practiceapi.devmountain.com/api/tasks/${id}`)
       .then(tasks => {
-        const newTasks = this.props.setTask(tasks.data)
+        this.props.setTask(tasks.data);
         this.setState({
-          tasks: newTasks.payload
-        })
-  
+          tasks: tasks.data
+        });
+      });
+  };
+
+  completeTask = id => {
+    axios
+      .put(`https://practiceapi.devmountain.com/api/tasks/${id}`)
+      .then(tasks => {
+        // const completed =
+        this.props.setTask(tasks.data);
+
+        this.setState({
+          isComplete: true
+        });
+      });
+  };
+
+  EditTask = () => {
+    const { id, title, description, isComplete } = this.props;
+    // const { id } = this.props.task;
+    axios
+      .patch(`https://practiceapi.devmountain.com/api/tasks/${id}`, {
+        id: id,
+        title: title,
+        desciption: description,
+        completed: isComplete
+      })
+      .then(task => {
+        this.props.setTask(task.data);
+        //   this.setState({
+
+        //   })
       });
   };
 
@@ -41,6 +73,7 @@ class TodoList extends Component {
   };
 
   render() {
+    console.log("This dot props", this.props.task);
     const { tasks } = this.state;
 
     const mappedTasks = tasks.map(task => {
@@ -52,6 +85,7 @@ class TodoList extends Component {
             completed={task.completed}
             id={task.id}
             deleteTask={this.deleteTask}
+            completeTask={this.completeTask}
           />
         </div>
       );
@@ -59,14 +93,15 @@ class TodoList extends Component {
 
     return (
       <div className="todo-main">
-        {/* {console.log('tasks below')}
-        {console.log(this.state.tasks)} */}
+        {console.log("tasks below")}
+        {console.log(this.state.tasks)}
+        <Form getAllTasks={this.getAllTasks} />
         <div className="todo-inner">
-          <h1>TO-DO:</h1>
-          <button>
-            <Link to="/form">Add new To-do</Link>
-          </button>
-          <div className="list">{mappedTasks}todos here</div>
+          {/* <TaskEdit editTask={this.editTask} /> */}
+          {/* <button>
+            <Link to="/taskedit">Add new To-do</Link>
+          </button> */}
+          <div className="list">{mappedTasks}</div>
         </div>
       </div>
     );

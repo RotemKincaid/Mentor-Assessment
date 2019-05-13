@@ -38,7 +38,7 @@ module.exports = {
     }
     const { title, description, completed } = req.body;
 
-    db.update_task([title, description, completed])
+    db.update_task([title, description, completed, id])
       .then(tasks => {
         res.status(200).send(tasks);
       })
@@ -69,9 +69,9 @@ module.exports = {
   markComplete: (req, res) => {
     const { id } = req.params;
     const db = req.app.get("db");
-    const { completed } = req.body;
+    // const { completed } = req.body;
 
-    db.mark_complete([completed])
+    db.mark_complete([id])
       .then(task => {
         res.status(200).send(task);
       })

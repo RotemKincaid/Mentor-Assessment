@@ -1,28 +1,49 @@
-.btns {
+.form-main {
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 10px;
-  margin: 5px;
-  .save-btn {
-    height: 30px;
-    width: 60px;
-    background-color: rgb(67, 151, 207);
-    color: white;
-    // margin: 5px;
-  }
-  .cancel-btn {
-    height: 30px;
-    width: 60px;
-    background-color: rgb(190, 187, 187);
-    color: black;
-    margin: 5px;
-  }
 
-  .delete-btn {
-    height: 30px;
-    width: 60px;
-    background-color: red;
-    color: white;
+  .form-inner {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: whitesmoke;
+    height: 200px;
+    width: 450px;
+    margin: 20px;
+
+    .btns {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      margin: 5px;
+      .add-todo {
+        height: 40px;
+        width: 200px;
+        background-color: rgb(7, 183, 253);
+        color: white;
+        // margin: 5px;
+        a {
+          text-decoration: none;
+          color: white;
+          font-size: 20px;
+        }
+      }
+      // .cancel-btn {
+      //   height: 30px;
+      //   width: 60px;
+      //   background-color: rgb(190, 187, 187);
+      //   color: black;
+      //   margin: 5px;
+      // }
+
+      // .delete-btn {
+      //   height: 30px;
+      //   width: 60px;
+      //   background-color: red;
+      //   color: white;
+      // }
+    }
   }
 }

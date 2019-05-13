@@ -1,5 +1,5 @@
 update tasks
-set completed = $1
-where id = $2
+set completed = not completed
+where id = $1
 
 returning *;
