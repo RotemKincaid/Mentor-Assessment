@@ -87,27 +87,7 @@ class TodoList extends Component {
   };
 
   editTask = (id, title, description, isComplete) => {
-    // const { title, description, isComplete } = this.props;
-    // const { id } = this.props.task;
-
-    // axios
-    //   .patch(
-    //     `https://practiceapi.devmountain.com/api/tasks/${id}?title=${title}?description=${description}?completed=${isComplete}`,
-    //     {
-    //       id: id,
-    //       title: title,
-    //       desciption: description,
-    //       completed: isComplete
-    //     }
-    //   )
-    //   .then(task => {
-    //     console.log("task from TODOLIST", task);
-
     this.props.edit(id, title, description, isComplete);
-    // this.setState({
-    //   tasks: tasks.data
-    // });
-    // });
   };
 
   editHandler = e => {
@@ -152,17 +132,12 @@ class TodoList extends Component {
 
     return (
       <div className="todo-main">
-        {/* {this.state.isEditing ? this.renderEditView : this.renderDefaultView} */}
         {console.log("tasks below")}
         {console.log(this.state.tasks)}
-        {/* {console.log(task.title)} */}
+
         <div className="form-mappedtasks">
           <Form getAllTasks={this.getAllTasks} />
           <div className="todo-inner">
-            {/* <TaskEdit editTask={this.editTask} /> */}
-            {/* <button>
-            <Link to="/taskedit">Add new To-do</Link>
-          </button> */}
             <div className="list">{mappedTasks}</div>
           </div>
         </div>

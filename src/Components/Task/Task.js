@@ -83,6 +83,13 @@ class Task extends Component {
     });
   };
 
+  completeHandler = () => {
+    this.setState({
+      completed: !this.state.completed
+    });
+    console.log(this.state.completed);
+  };
+
   // changeHandler = e => {
   //   this.setState({
   //     newVal: e.target.value
@@ -101,20 +108,34 @@ class Task extends Component {
             style={{
               textDecoration: this.state.completed ? "lineThrough" : ""
             }}
-            onClick={this.props.completeTask}
+            // onClick={this.props.completeTask}
           />
         ) : (
           <div />
         )}
-        <div className="title" onClick={() => this.editHandler}>
-          <Link to={`/newtaskedit/${id}`}>{title}</Link>
-        </div>
+
+        {completed ? (
+          <span
+            style={{
+              textDecorationLine: "line-through",
+              textDecorationStyle: "solid"
+            }}
+          >
+            {title}
+          </span>
+        ) : (
+          <div className="title" onClick={() => this.editHandler}>
+            <Link to={`/newtaskedit/${id}`}>{title}</Link>
+          </div>
+        )}
         <div className="buttons">
-          {this.state.isEditing ? <EditTaskWithHooks /> : null
-          // <button>
+          {this.state.isEditing ? (
+            <EditTaskWithHooks editTask={this.editTask} />
+          ) : null}
+          {/* // <button>
           //   <Link to="/newtaskedit">to edit view ></Link>
           // </button>
-          }
+          } */}
           {/* {this.state.isEditing ? (
             <button onClick={this.props.editTask()}>save edit</button>
           ) : (
@@ -130,17 +151,7 @@ class Task extends Component {
             Task{title}
             <button onClick={() => this.props.deleteTask(id)}>X</button> */}
           {/* </div> */}
-          <button onClick={() => this.completeTask(id)}>
-            {/* <Text
-            style={{
-              textDecorationLine: "line-through",
-              textDecorationStyle: "solid"
-            }}
-          >
-            Solid line-through
-          </Text> */}
-            Complete
-          </button>
+          <button onClick={() => this.completeHandler()}>Complete</button>
 
           <button onClick={() => this.props.deleteTask(id)}>X</button>
         </div>

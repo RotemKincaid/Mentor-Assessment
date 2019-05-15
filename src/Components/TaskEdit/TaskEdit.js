@@ -39,7 +39,7 @@ class TaskEdit extends Component {
 
   editTask = id => {
     const { title, description, isComplete } = this.state;
-    // const { id } = this.props.task;
+
     let updatedTask = {
       title: title,
       description: description,
@@ -49,31 +49,8 @@ class TaskEdit extends Component {
       .patch(`https://practiceapi.devmountain.com/api/tasks/${id}`, updatedTask)
       .then(task => {
         this.props.setTasks(task.data);
-        //   this.setState({
-
-        //   })
       });
   };
-
-  //   createTask = () => {
-  //     const { title, description, isComplete } = this.state;
-  //     const { id } = this.props.task;
-  //     axios
-  //       .post("https://practiceapi.devmountain.com/api/tasks", {
-  //         id: id,
-  //         title: title,
-  //         desciption: description,
-  //         completed: isComplete
-  //       })
-  //       .then(tasks => {
-  //         this.props.setTask(tasks.data);
-
-  //         this.setState({
-  //           title: "",
-  //           description: ""
-  //         });
-  //       });
-  //   };
 
   render() {
     // var required = true;

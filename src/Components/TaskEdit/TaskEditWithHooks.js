@@ -44,7 +44,7 @@ function TaskEditWithHooks(props) {
       <div className="with-hooks-inner">
         task:
         <h3> {titleInput} </h3>
-        {/* console.log("PROPS TITLE", props.title); */}
+        {console.log("PROPS", props)}
         <input
           value={titleInput}
           onChange={event => setTitleInput(event.target.value)}
@@ -56,9 +56,11 @@ function TaskEditWithHooks(props) {
           value={descriptionInput}
           onChange={event => setDescriptionInput(event.target.value)}
         />
-        <button onClick={() => props.edit()}>save</button>
+        <button onClick={id => props.editTask(id)}>
+          <Link to="/">save</Link>
+        </button>
         <button>
-          <Link to="/">cance</Link>l
+          <Link to="/">cancel</Link>
         </button>
         <button>delete</button>
       </div>
