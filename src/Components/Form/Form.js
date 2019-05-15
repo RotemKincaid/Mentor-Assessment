@@ -1,17 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setTask } from "../../ducks/store";
+import { setTasks } from "../../ducks/reducer";
 import "../Form/Form.scss";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
 class Form extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       title: "",
-      description: "",
+      // description: "",
       isComplete: false
     };
   }
@@ -22,11 +22,11 @@ class Form extends Component {
     });
   };
 
-  descriptionHandler = e => {
-    this.setState({
-      description: e.target.value
-    });
-  };
+  // descriptionHandler = e => {
+  //   this.setState({
+  //     description: e.target.value
+  //   });
+  // };
 
   completeHandler = e => {
     this.setState({
@@ -36,28 +36,27 @@ class Form extends Component {
 
   createTask = () => {
     const { title, description, isComplete } = this.state;
-    const { id } = this.props.task;
+    const { id } = this.props.tasks;
     axios
       .post("https://practiceapi.devmountain.com/api/tasks", {
         id: id,
         title: title,
-        desciption: description,
+        // desciption: description,
         completed: isComplete
       })
       .then(tasks => {
-        this.props.setTask(tasks.data);
+        this.props.setTasks(tasks.data);
 
         this.setState({
-          title: "",
-          description: ""
+          title: ""
+          // ,
+          // description: ""
         });
         this.props.getAllTasks();
       });
   };
 
   render() {
-    var required = true;
-
     return (
       <div className="form-main">
         <div className="form-inner">
@@ -71,7 +70,7 @@ class Form extends Component {
             value={this.state.title}
             className="title-input"
             onChange={this.titleHandler}
-            required={required}
+            // required={required}
           />
           {/* <button
             className="complete-btn"
@@ -110,7 +109,7 @@ function mapStateToProps(state) {
   return state;
 }
 const mapDispatchToProps = {
-  setTask: setTask
+  setTasks: setTasks
 };
 export default connect(
   mapStateToProps,

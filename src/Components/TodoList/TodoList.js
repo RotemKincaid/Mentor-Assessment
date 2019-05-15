@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setTask } from "../../ducks/store";
+import { setTasks, edit, complete, getAll } from "../../ducks/reducer";
 import { Link } from "react-router-dom";
 import Task from "../Task/Task";
 import "../TodoList/TodoList.scss";
 import axios from "axios";
 import Form from "../Form/Form";
 import TaskEdit from "../TaskEdit/TaskEdit";
+import TaskEditWithHooks from "../TaskEdit/TaskEditWithHooks";
 
 class TodoList extends Component {
   constructor() {
@@ -15,17 +16,57 @@ class TodoList extends Component {
     this.state = {
       tasks: [],
       addedTask: "",
-      isComplete: false
+      isComplete: false,
+      isEditing: false,
+      newVal: ""
     };
   }
   componentDidMount() {
     this.getAllTasks();
   }
+
+  changeEditMode = () => {
+    this.setState({
+      isEditing: !this.state.isEditing
+    });
+  };
+
+  updateValue = e => {
+    this.setState({
+      isEditing: false,
+      newVal: e.target.value
+    });
+  };
+
+  renderEditView = () => {
+    return (
+      <div>
+        <input
+          type="text"
+          value={this.state.value}
+          // onChange={event => setTitleInput(event.target.value)}
+          // ref="theTextInput"
+        />
+        <button onClick={this.changeEditMode}>X</button>
+        <button onClick={this.updateValue}>save edit</button>
+      </div>
+    );
+  };
+
+  renderDefaultView = () => {
+    return (
+      <div>
+        <Task onDoubleClick={this.changeEditMode}>{this.state.value}</Task>
+        {}
+      </div>
+    );
+  };
+
   deleteTask = id => {
     axios
       .delete(`https://practiceapi.devmountain.com/api/tasks/${id}`)
       .then(tasks => {
-        this.props.setTask(tasks.data);
+        this.props.setTasks(tasks.data);
         this.setState({
           tasks: tasks.data
         });
@@ -45,36 +86,51 @@ class TodoList extends Component {
       });
   };
 
-  EditTask = () => {
-    const { id, title, description, isComplete } = this.props;
+  editTask = (id, title, description, isComplete) => {
+    // const { title, description, isComplete } = this.props;
     // const { id } = this.props.task;
-    axios
-      .patch(`https://practiceapi.devmountain.com/api/tasks/${id}`, {
-        id: id,
-        title: title,
-        desciption: description,
-        completed: isComplete
-      })
-      .then(task => {
-        this.props.setTask(task.data);
-        //   this.setState({
 
-        //   })
-      });
+    // axios
+    //   .patch(
+    //     `https://practiceapi.devmountain.com/api/tasks/${id}?title=${title}?description=${description}?completed=${isComplete}`,
+    //     {
+    //       id: id,
+    //       title: title,
+    //       desciption: description,
+    //       completed: isComplete
+    //     }
+    //   )
+    //   .then(task => {
+    //     console.log("task from TODOLIST", task);
+
+    this.props.edit(id, title, description, isComplete);
+    // this.setState({
+    //   tasks: tasks.data
+    // });
+    // });
+  };
+
+  editHandler = e => {
+    this.setState({
+      isEditing: true
+    });
   };
 
   getAllTasks = () => {
     axios.get("https://practiceapi.devmountain.com/api/tasks").then(tasks => {
-      this.props.setTask(tasks.data);
+      console.log("Where are my tasks???", tasks.data);
+      // const taskList =
+      this.props.setTasks(tasks.data);
       this.setState({
-        tasks: tasks.data
+        tasks: tasks.data.reverse()
       });
     });
   };
 
   render() {
-    console.log("This dot props", this.props.task);
+    console.log("This dot props", this.props);
     const { tasks } = this.state;
+    const { task } = this.props;
 
     const mappedTasks = tasks.map(task => {
       return (
@@ -86,6 +142,9 @@ class TodoList extends Component {
             id={task.id}
             deleteTask={this.deleteTask}
             completeTask={this.completeTask}
+            renderEditView={this.renderEditView}
+            editTask={this.editTask}
+            changeEditMode={this.changeEditMode}
           />
         </div>
       );
@@ -93,15 +152,19 @@ class TodoList extends Component {
 
     return (
       <div className="todo-main">
+        {/* {this.state.isEditing ? this.renderEditView : this.renderDefaultView} */}
         {console.log("tasks below")}
         {console.log(this.state.tasks)}
-        <Form getAllTasks={this.getAllTasks} />
-        <div className="todo-inner">
-          {/* <TaskEdit editTask={this.editTask} /> */}
-          {/* <button>
+        {/* {console.log(task.title)} */}
+        <div className="form-mappedtasks">
+          <Form getAllTasks={this.getAllTasks} />
+          <div className="todo-inner">
+            {/* <TaskEdit editTask={this.editTask} /> */}
+            {/* <button>
             <Link to="/taskedit">Add new To-do</Link>
           </button> */}
-          <div className="list">{mappedTasks}</div>
+            <div className="list">{mappedTasks}</div>
+          </div>
         </div>
       </div>
     );
@@ -112,7 +175,7 @@ function mapStateToProps(state) {
   return state;
 }
 const mapDispatchToProps = {
-  setTask: setTask
+  setTasks: setTasks
 };
 export default connect(
   mapStateToProps,

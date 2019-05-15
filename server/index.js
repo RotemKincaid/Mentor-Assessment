@@ -1,16 +1,16 @@
 const express = require("express");
 const app = express();
 require("dotenv").config();
-const massive = require("massive");
+// const massive = require("massive");
 app.use(express.json());
 const controller = require("./controller");
 
 const { SERVER_PORT, CONNECTION_STRING } = process.env;
 
-massive(CONNECTION_STRING).then(db => {
-  app.set("db", db);
-  console.log("connected to db");
-});
+// massive(CONNECTION_STRING).then(db => {
+//   app.set("db", db);
+//   console.log("connected to db");
+// });
 
 // GET -
 app.get("https://practiceapi.devmountain.com/api/tasks", controller.getTasks);

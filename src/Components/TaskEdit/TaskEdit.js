@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { setTask } from "../../ducks/store";
+import { setTasks } from "../../ducks/reducer";
 import "../TaskEdit/TaskEdit.scss";
 
 import axios from "axios";
@@ -11,9 +11,9 @@ class TaskEdit extends Component {
     super(props);
 
     this.state = {
-      title: this.props.task.title,
-      description: this.props.task.description,
-      isComplete: this.props.task.completed
+      title: "",
+      description: "",
+      isComplete: false
     };
   }
 
@@ -38,17 +38,17 @@ class TaskEdit extends Component {
   };
 
   editTask = id => {
-    const { title, description, isComplete } = this.props.task;
+    const { title, description, isComplete } = this.state;
     // const { id } = this.props.task;
+    let updatedTask = {
+      title: title,
+      description: description,
+      isComplete: isComplete
+    };
     axios
-      .patch(`https://practiceapi.devmountain.com/api/tasks/${id}`, {
-        id: id,
-        title: title,
-        desciption: description,
-        completed: isComplete
-      })
+      .patch(`https://practiceapi.devmountain.com/api/tasks/${id}`, updatedTask)
       .then(task => {
-        this.props.setTask(task.data);
+        this.props.setTasks(task.data);
         //   this.setState({
 
         //   })
@@ -90,7 +90,7 @@ class TaskEdit extends Component {
           {title}
           <input
             // ref={title}
-            value={this.props.title}
+            value={title}
             className="title-input"
             onChange={this.titleHandler}
             // required={required}
@@ -105,7 +105,7 @@ class TaskEdit extends Component {
           <input
             placeholder="add description..."
             // ref={this.props.description}
-            value={this.state.description}
+            value={description}
             className="desc-input"
             onChange={this.descriptionHandler}
           />
@@ -136,7 +136,7 @@ function mapStateToProps(state) {
   return state;
 }
 const mapDispatchToProps = {
-  setTask: setTask
+  setTasks: setTasks
 };
 export default connect(
   mapStateToProps,
